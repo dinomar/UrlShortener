@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UrlShortenerDAL.EF;
 using UrlShortenerDAL.Models;
@@ -45,6 +46,17 @@ namespace UrlShortenerDAL.Repos
         public List<LinkModel> GetAllForUser(string uid)
         {
             return GetSome(m => m.OwnerId == uid);
+        }
+
+        public LinkModel GetLinkByUrl(string url)
+        {
+            List<LinkModel> links = GetSome(m => m.Url == url);
+            if (links.Count > 0)
+            {
+                return links.First();
+            }
+
+            return null;
         }
 
         private string generateUrl(Random random, int length = 6)

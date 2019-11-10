@@ -14,7 +14,7 @@
             @Html.DisplayNameFor(model => model.Url)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Url)
+            @ViewData["BaseUrl"]@Html.DisplayFor(model => model.Url)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Original)

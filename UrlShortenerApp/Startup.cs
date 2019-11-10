@@ -72,6 +72,10 @@ namespace UrlShortenerApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                   name: "links",
+                   pattern: "{*url}",
+                   defaults: new { controller = "Home", action = "Index" });
                 endpoints.MapRazorPages();
             });
         }
