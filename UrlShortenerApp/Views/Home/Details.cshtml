@@ -10,17 +10,23 @@
     <h4>LinkModel</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Url)
         </dt>
         <dd class="col-sm-10">
             @Html.TextBoxFor(model => model.Url, new { @readonly = true, @class = "form-control" })
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Original)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Original)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Visitors)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Visitors)
         </dd>
     </dl>
 </div>
