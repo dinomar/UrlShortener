@@ -13,8 +13,8 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Url)
         </dt>
-        <dd class = "col-sm-10">
-            @ViewData["BaseUrl"]@Html.DisplayFor(model => model.Url)
+        <dd class="col-sm-10">
+            @Html.TextBoxFor(model => model.Url, new { @readonly = true, @class = "form-control" })
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Original)

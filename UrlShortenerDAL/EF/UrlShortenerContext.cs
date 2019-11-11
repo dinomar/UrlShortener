@@ -13,20 +13,5 @@ namespace UrlShortenerDAL.EF
         internal UrlShortenerContext() { }
 
         public DbSet<LinkModel> Links { get; set; }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (optionsBuilder.IsConfigured)
-        //    {
-        //        //var connectionString = @"server=.\SQLEXPRESS;database=BoardDb; integrated security=True; MultipleActiveResultSets=True;App=EntityFramework;";
-
-        //        //optionsBuilder.UseSqlServer(connectionString, options => options.EnableRetryOnFailure()).ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning));
-        //    }
-        //}
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //base.OnModelCreating(modelBuilder);
-        }
     }
 }

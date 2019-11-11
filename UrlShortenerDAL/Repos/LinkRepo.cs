@@ -25,6 +25,7 @@ namespace UrlShortenerDAL.Repos
         {
             string url = generateUrl(random);
 
+            // Check if generated url already exists.
             List<LinkModel> links = GetSome(m => m.Url == url);
             for (int i = 0; i < 3; i++)
             {
@@ -34,13 +35,15 @@ namespace UrlShortenerDAL.Repos
                 links = GetSome(m => m.Url == url);
             }
 
+            // Retry generate new url failed.
             if (links.Count > 0)
             {
                 throw new Exception("Generated url already exists. Retry failed.");
             }
 
             model.Url = url;
-            return Add(model); ;
+            model.Visitors = 1;
+            return Add(model);
         }
 
         public List<LinkModel> GetAllForUser(string uid)
@@ -51,6 +54,28 @@ namespace UrlShortenerDAL.Repos
         public LinkModel GetLinkByUrl(string url)
         {
             List<LinkModel> links = GetSome(m => m.Url == url);
+            if (links.Count > 0)
+            {
+                return links.First();
+            }
+
+            return null;
+        }
+
+        public LinkModel GetLinkByOriginal(string originalUrl)
+        {
+            List<LinkModel> links = GetSome(m => m.Original == originalUrl);
+            if (links.Count > 0)
+            {
+                return links.First();
+            }
+
+            return null;
+        }
+
+        public LinkModel GetLinkByOriginalForUser(string originalUrl, string uid)
+        {
+            List<LinkModel> links = GetSome(m => m.Original == originalUrl && m.OwnerId == uid);
             if (links.Count > 0)
             {
                 return links.First();

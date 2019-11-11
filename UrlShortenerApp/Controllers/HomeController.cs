@@ -38,8 +38,12 @@ namespace UrlShortenerApp.Controllers
             LinkModel link = _linkRepo.GetLinkByUrl(url);
             if (link == null)
             {
-                return RedirectToAction(nameof(Create));
+                return View("NotFound");
             }
+
+            // Inc Visitors
+            link.Visitors++;
+            _linkRepo.Update(link);
 
             return Redirect(link.Original);
         }
@@ -53,7 +57,15 @@ namespace UrlShortenerApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(_linkRepo.GetAllForUser(user.Id));
+            List<LinkModel> links = _linkRepo.GetAllForUser(user.Id);
+
+            string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            foreach (LinkModel link in links)
+            {
+                link.Url = baseUrl + link.Url;
+            }
+
+            return View(links);
         }
 
         // GET: Home/Details/5
@@ -70,7 +82,8 @@ namespace UrlShortenerApp.Controllers
                 return NotFound();
             }
 
-            ViewData["BaseUrl"] = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/";
+            model.Url = baseUrl + model.Url;
             return View(model);
         }
 
@@ -89,10 +102,18 @@ namespace UrlShortenerApp.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                // User is logged in.
                 IdentityUser user = await _userManager.GetUserAsync(User);
                 if (user == null)
                 {
+                    return View(model);
+                }
+
+                // Check if user already created this url.
+                LinkModel link = _linkRepo.GetLinkByOriginalForUser(model.Original, user.Id);
+                if (link != null)
+                {
+                    ModelState.AddModelError(String.Empty, "You have already created a Short link for this url.");
                     return View(model);
                 }
 
@@ -130,22 +151,7 @@ namespace UrlShortenerApp.Controllers
             LinkModel model = _linkRepo.GetOne(id);
             _linkRepo.Delete(model);
 
-            return RedirectToAction(nameof(Index));
-        }
-
-
-        /* -------------------------------------------------------------------------------------------------- */
-
-        //[Authorize]
-        public async Task<IActionResult> PrivacyAsync()
-        {
-            //ViewData["Message"] = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
-            
-            //IdentityUser user = await _userManager.GetUserAsync(User);
-            //string email = user.Email;
-            //string uid = user.Id;
-            //_userManager.GetUserId(context)
-            return View();
+            return RedirectToAction(nameof(List));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
