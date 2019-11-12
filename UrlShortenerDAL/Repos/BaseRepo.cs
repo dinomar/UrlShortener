@@ -14,10 +14,9 @@ namespace UrlShortenerDAL.Repos
         private readonly DbSet<T> _table;
         private readonly DbContext _db;
         //protected UrlShortenerContext Context => _db;
+        //public BaseRepo() : this(new UrlShortenerContext()) { }
 
-        public BaseRepo() : this(new UrlShortenerContext()) { }
-
-        public BaseRepo(UrlShortenerContext context)
+        public BaseRepo(DbContext context)
         {
             _db = context;
             _table = _db.Set<T>();

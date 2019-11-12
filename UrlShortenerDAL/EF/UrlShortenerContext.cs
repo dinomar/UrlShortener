@@ -10,8 +10,7 @@ namespace UrlShortenerDAL.EF
     public class UrlShortenerContext : DbContext
     {
         public UrlShortenerContext(DbContextOptions options) : base(options) { }
-        internal UrlShortenerContext() { }
-
+        //internal UrlShortenerContext() { }
         public DbSet<LinkModel> Links { get; set; }
     }
 }
